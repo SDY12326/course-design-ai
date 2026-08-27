@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "完成课程设计第3阶段，需要在GitHub仓库创建data目录存放数据集，创建prompt目录存放AI对话json记录"
+  },
+  {
+    "role": "assistant",
+    "content": "GitHub网页不能直接创建空文件夹，使用目录名/.gitkeep占位文件生成文件夹。data存放项目数据集，prompt存放每阶段导出的AI对话json，上下文压缩前要提前备份对话再上传仓库。大体积数据集不建议上传仓库，可以在文档填写数据集下载链接。"
+  }
+]
