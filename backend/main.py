@@ -1,37 +1,44 @@
-"""
-FastAPI后端服务：工业设备故障预警接口
-接收传感器时序数据，调用训练好的LSTM模型，返回故障预警结果
-"""
 from fastapi import FastAPI
-import torch
+from pydantic import BaseModel
 import numpy as np
-import sys
-sys.path.append("../model")
 from train import FaultLSTM
+from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI(title="设备故障预警接口")
+app = FastAPI()
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-#加载训练完成模型
-model = FaultLSTM(input_dim=13).to(device)
-model.load_state_dict(torch.load("../model/fault_lstm.pt",map_location=device))
-model.eval()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+model = FaultLSTM()
+#优先加载本地模型；没有就自动训练一套模拟模型
+try:
+    model.load_model()
+    print("本地模型加载成功")
+except Exception as e:
+    print(f"未检测到模型文件，执行模拟训练:{e}")
+    from train import get_demo_sample
+    X_demo,y_demo = get_demo_sample()
+    model.train(X_demo,y_demo)
+    model.save_model()
+    print("模拟演示模型训练完成并保存")
+
+
+class Item(BaseModel):
+    seq: list
 
 @app.post("/predict")
-def predict_fault(sensor_seq:list):
-    """
-    sensor_seq:50步传感器时序输入
-    return: fault_prob故障概率，is_risk 是否故障风险
-    """
-    input_tensor = torch.tensor([sensor_seq],dtype=torch.float32).to(device)
-    with torch.no_grad():
-        prob = model(input_tensor).item()
-    risk_flag = 1 if prob>0.5 else 0
-    return {
-        "fault_probability":round(prob,4),
-        "is_fault_risk":risk_flag
-    }
+async def predict(item:Item):
+    arr = np.array(item.seq).reshape(1,-1)
+    res = model.predict(arr)
+    label_text = "故障预警" if res ==1 else "运行正常"
+    return {"code":0,"result":res,"desc":label_text}
+
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app,host="0.0.0.0",port=8000)
+    uvicorn.run(app,host="127.0.0.1",port=8000)
