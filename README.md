@@ -1,26 +1,23 @@
-# 课程设计AI：工业设备传感器故障预警系统
-制造智能技术课程设计，B/S架构，面向工厂设备运维，实现涡轮发动机故障预警。
+# 智维引擎：工业设备预测性维护系统
 
-## 项目模块
-1. data：NASA C‑MAPSS工业数据集，数据预处理脚本
-2. model：LSTM故障预测训练、评估代码
-3. backend：FastAPI后端接口服务
-4. frontend：web前端交互页面
-5. database：sqlite数据库脚本
-6. logs：训练日志、实验截图
-7. prompt：vibe‑coding全部AI对话记录（过程档案）
+面向工厂动力段与装配段的 B/S 预测性维护工作台，串联设备台账、传感器时序、风险分类、异常检测、RUL 估计和处置建议。
 
-## 阶段文档
-- 选题说明.md：项目选题
-- 方案设计.md：整体方案规划
-- 模型训练.md：模型训练评估报告
-- 系统实现.md：前后端数据库集成实现
+## 源码目录
 
-## 数据集
-NASA C‑MAPSS涡轮发动机退化数据集，存放于 ./data
+所有运行源码与 SQL 集中在 `source/`：`backend`（FastAPI 与算法）、`frontend`（Web UI）、`data`（NASA 数据与处理）、`model`（训练评估）、`database`（SQLite 与 `schema.sql`）、`tests`（自动化测试）以及 `source/启动系统.ps1`。
 
-## 运行说明
-1. 安装项目依赖
-2. 初始化sqlite数据库
-3. 启动FastAPI后端服务
-4. 在浏览器打开前端页面，使用故障预警系统
+课程文档、日志、页面截图和演示视频工程保留在项目根目录。
+
+## 运行
+
+```powershell
+.\source\启动系统.ps1
+```
+
+浏览器访问 http://127.0.0.1:8000，接口文档访问 http://127.0.0.1:8000/docs。
+
+## 测试
+
+```powershell
+python -m pytest -q source/tests
+```

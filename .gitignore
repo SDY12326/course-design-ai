@@ -1,0 +1,13 @@
+__pycache__/
+.pytest_cache/
+*.pyc
+*.pyo
+.venv/
+source/database/engine.db
+source/data/processed_industrial_data.csv
+source/data/NASA_CMAPSS.zip
+source/data/nasa_extract/
+source/model/*.joblib
+logs/
+page_capture/
+video_demo/
