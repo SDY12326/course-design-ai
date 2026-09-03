@@ -1,0 +1,10 @@
+[
+  {
+    "role":"user",
+    "content":"帮我写LSTM模型训练代码，实现发动机故障预警"
+  },
+  {
+    "role":"assistant",
+    "content":"提供train.py完整代码，实现时序故障二分类任务"
+  }
+]
