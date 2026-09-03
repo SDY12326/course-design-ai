@@ -1,10 +1,20 @@
-# 数据目录说明
-本目录存放课程设计项目所用到的数据文件。
 
-数据集名称：IMDB电影评论数据集
-数据集来源：公开数据集
-访问链接：https://hf-mirror.com/datasets/stanfordnlp/imdb
-数据规模：共50000条样本
-数据用途：为本课程设计提供原始输入数据，用于文本情感分类模型训练
+# data目录说明
+存放NASA C‑MAPSS涡轮发动机退化工业数据集，用于设备故障预警。
 
-> 重要提示：如果数据集文件体积较大，不直接上传至GitHub仓库，在文档中填写数据集下载来源链接。
+## 数据集信息
+数据集名称：C‑MAPSS Turbofan Engine Degradation Simulation Data
+访问地址：https://data.nasa.gov/dataset/C‑MAPSS‑Turbofan‑Engine‑Degradation‑Simulation‑Data
+
+### 文件清单
+1. train_FD001.txt：原始发动机传感器时序数据集（本地下载后上传）
+2. preprocess.py：工业数据预处理脚本
+3. processed_industrial_data.csv：预处理后输出数据集
+
+### 处理说明
+1. 计算RUL剩余使用寿命
+2. 构造故障二分类标签：RUL≤30标记为故障风险样本
+3. 剔除无效传感器字段
+4. 传感器特征标准化归一化
+
+> 网页GitHub无法运行脚本，需要本地运行preprocess.py生成processed_industrial_data.csv
